@@ -44,6 +44,10 @@ import java.io.*;
  *
  *         抽取方法的代码块的快捷键:
  *            ctrl + alt + M
+ *
+ *      具体的运用:
+ *          后面有配置文件,配置文件的读取就是通过 servletContext读取/通过Class 来读取
+ *
  */
 @WebServlet(urlPatterns = "/context03")
 public class Context03Servlet extends HttpServlet {
