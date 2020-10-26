@@ -26,7 +26,6 @@ import java.io.IOException;
  *            requestDispatcher.forward(req,resp);
  *
  *    请求转发的细节:
- *
  *      01  请求转发可以实现 数据共享
  *             你访问aservlet中,转发到bservlet中, 可以把aservlet中的数据发送到bservlet中
  *             req 是我们域对象,可以实现数据共享
