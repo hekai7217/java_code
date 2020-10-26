@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+	1.填写xml文档的根元素
+	2.引入xsi前缀.  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	3.引入xsd文件命名空间.  xsi:schemaLocation="http://www.sxsxt.cn/xml student.xsd"
+	4.为每一个xsd约束声明一个前缀,作为标识  xmlns="http://www.szsxt.cn/xml"
+	xmlns:a 设置前缀 每个标签都需要加前缀 (设置前缀为了区分 相同标签)
+	xmlns 默认 前面不用加   
+ -->
+ <stu:students xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 		   xsi:schemaLocation="http://www.szsxt.cn/xml student.xsd"
+ 		   xmlns:stu="http://www.szsxt.cn/xml"
+ 		    >
+
+	<stu:student number="sxt_0001">
+		<stu:name>杨逍</stu:name>
+		<stu:age>30</stu:age>
+		<stu:sex>male</stu:sex>
+	</stu:student>
+
+	<stu:student number="sxt_0002">
+		<stu:name>范瑶</stu:name>
+		<stu:age>28</stu:age>
+		<stu:sex>male</stu:sex>
+	</stu:student>
+
+ </stu:students>

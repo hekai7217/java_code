@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 版本和 编码  -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper 的约束文件
+         写mapper 有约束
+     mapper.xml 和 mapper接口要进行映射
+     01 mapper.xml 和mapper 进行绑定  namespace 命名空间
+              全限定名称 = 包名 + 类名
+
+     02  insert   插入的sql的标签    sql是插入的sql
+           属性:
+             id 和接口中的方法名称一致
+             parameterType  插入的参数
+                   基本数据类型和 引用类型
+                   全限定名称
+
+          insert 标签中写sql
+          mybatis 可以使用 一种表达式 可以获取对象的数值
+          #{对象的属性值/map的属性值}
+-->
+<mapper namespace="com.jutixueyuan.mapper.UserDao">
+    <insert id="insertUserIfo" parameterType="com.jutixueyuan.bean.User">
+         insert into user values (default ,#{name},#{password},#{age})
+    </insert>
+
+</mapper>

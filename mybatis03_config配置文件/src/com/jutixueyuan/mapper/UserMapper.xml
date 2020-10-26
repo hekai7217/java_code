@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jutixueyuan.mapper.UserMapper">
+
+<!--
+     config 中配置了别名后,参数返回值可以简写
+          integer  简写   java.lang.integer            mybatis自动给我们配置的 内置别名
+          User     简写   com.jutixueyuan.bean.user    自己手动配置
+-->
+
+    <select id="findUserById" parameterType="integer" resultType="User">
+        select * from user where id = #{id}
+    </select>
+</mapper>

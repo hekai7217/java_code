@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE students SYSTEM "C:\java_lesson\java_10_9\java_code\java_xml\src\com\jutixueyuan\dtd\student.dtd">
+<!--  xml 文件中 引入  dtd 约束文件 -->
+<!--
+ dtd 的约束 数据不够完整
+    有一个更加强大的 xsd 约束 可以 约束数据类型 和命名空间
+-->
+<students>
+
+	<student number="001">
+		<name>张翠山</name>
+		<age>1000</age>
+		<sex>李</sex>
+	</student>
+
+	<student number="002">
+		<name>殷素素</name>
+		<age>28</age>
+		<sex>女</sex>
+	</student>
+
+</students>

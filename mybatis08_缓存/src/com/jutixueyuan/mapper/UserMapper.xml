@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jutixueyuan.mapper.UserMapper">
+
+<!--
+         eviction 缓存策略   LRU  最近最少使用的，一处最长时间不用的对象
+
+         flushInterval  缓存时间的刷新,单位是毫秒   100000 秒
+                        如果没有配置,  当SQL被执行的时候才会去刷新缓存。
+         readOnly 只能读 (线程安全配置)
+         size   缓存对象的大小 1024 个对象
+-->
+    <cache eviction="LRU" flushInterval="100000" readOnly="true" size="1024"/>
+
+    <select id="findUserById" parameterType="integer" resultType="User">
+        select * from USER where id = #{id}
+    </select>
+
+</mapper>

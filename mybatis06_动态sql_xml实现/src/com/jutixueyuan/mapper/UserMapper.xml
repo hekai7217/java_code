@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jutixueyuan.mapper.UserMapper">
+
+<!--
+        01 标签 + id
+        02 参数 + 返回值
+        03 写sql (mysql中测试sql是否正确)
+        04 mapper.xml 在 config中进行配置
+
+        动态的sql 会通过参数 产生不同的sql
+        如果 一个条件都没有 where 后面都不能有
+        如果 没有name属性  不能有  name = #{name}  判断条件
+
+       mybatis提供了一些标签,可以处理 动态sql
+       <where>   添加 where的条件, 忽略where后面所有的 sql语句,如果 where 后面 没有第一个条件
+           会把 and/or的 这种关键字 进行删除
+       mybatis 内部有一个 sqlNode这类 中有 WhereSqlNode 专门处理 xml中的动态的sql标签
+       <if>  类似java if(){},用于判断   IfSqlNode处理 xml中的if标签
+            test="写表达式/对象的属性"
+            如果 test中的结果为true 就会 拼接 sql的条件
+-->
+<!--    <select id="findUserByCondition" parameterType="User" resultType="User">-->
+<!--&lt;!&ndash;        select * from user where name = #{name} and age = #{age} and password = #{password}&ndash;&gt;-->
+<!--        select * from user-->
+<!--&lt;!&ndash;        标签替代 where条件&ndash;&gt;-->
+<!--        <where>-->
+<!--&lt;!&ndash;            if标签进行判断&ndash;&gt;-->
+<!--            <if test="name != null">-->
+<!--                name = #{name}-->
+<!--            </if>-->
+<!--            <if test="age != null">-->
+<!--               or age = #{age}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+<!--  条件查询
+        name 写模糊查询
+        方案1:  条件查询的 传入的参数拼接 %参数值%
+                user.setName("%花%"); + name like #{name}
+
+        方法2: 在 判断条件中拼接 sql
+               使用sql的拼接函数: concat() 拼接函数
+              name like concat('%',#{name},'%')
+
+        方法3: 使用bind 标签
+              bind 元素允许你在 OGNL 表达式以外创建一个变量
+
+            <bind name="uname" value="'%'+name+'%'"/>
+            name like #{uname}
+              % + name +% 拼接成字符串 赋值给 变量 uname
+             从变量#{uname} 获取获取值
+  -->
+<!--    <select id="findUserByCondition" parameterType="User" resultType="User">-->
+<!--        &lt;!&ndash;        select * from user where name = #{name} and age = #{age} and password = #{password}&ndash;&gt;-->
+<!--        select * from user-->
+<!--        &lt;!&ndash;        标签替代 where条件&ndash;&gt;-->
+<!--        <where>-->
+<!--            &lt;!&ndash;            if标签进行判断&ndash;&gt;-->
+<!--            <if test="name != null">-->
+<!--&lt;!&ndash;                name like concat('%',#{name},'%')&ndash;&gt;-->
+<!--                <bind name="uname" value="'%'+name+'%'"/>-->
+<!--                name like #{uname}-->
+<!--            </if>-->
+<!--            <if test="age != null">-->
+<!--                or age = #{age}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+<!--    条件查询的where 标签 能满足开发
+        trim 可以自定义 where的条件
+           配置前缀: prefix  如果有查询的条件会 拼接where 关键字
+           prefixOverrides: 如果where条件没有第一个条件 有多余的 and/or 会删除 保证sql的正确
+           如果没有一个条件 不会拼接where 条件
+-->
+    <select id="findUserByCondition" parameterType="User" resultType="User">
+        <!--        select * from user where name = #{name} and age = #{age} and password = #{password}-->
+        select * from user
+        <trim prefix="where" prefixOverrides="AND|OR">
+            <if test="name != null">
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="age != null">
+                or age = #{age}
+            </if>
+        </trim>
+    </select>
+<!--    条件查询贷后的统计 -->
+    <select id="findUserByConditionUserCount" parameterType="User" resultType="long">
+        select count(*) from user
+
+        <include refid="condition_sql">
+        </include>
+    </select>
+
+<!--  sql标签 可以 重复的sql 代码片段进行抽取
+          属性id: 把重复的sql代码抽取后设置的 id
+      include 引入
+          可以通过sql标签的id,引用sql片段
+  -->
+
+    <sql id="condition_sql">
+        <where>
+            <if test="name != null">
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="age != null">
+                or age = #{age}
+            </if>
+        </where>
+    </sql>
+
+<!--   条件更新
+       以前 更新的时候,如果条件不存在,会把不存在的数据 更新为null
+       解决:可以使用动态的sql进行更新
+       更新的标签是:set
+              可以在update 的时候set 关键字后面的,逗号可以自动忽略
+
+        update user set name = #{name},age = #{age} where id = #{id}
+
+      细节: 条件判断拼接后面的, 不要省略不写
+-->
+<!--    <update id="updateUserByNotNUll" parameterType="User">-->
+<!--        update user-->
+<!--        <set>-->
+<!--            <if test="name != null">-->
+<!--                name = #{name},-->
+<!--            </if>-->
+<!--            <if test="password != null">-->
+<!--                password = #{password},-->
+<!--            </if>-->
+<!--            <if test="age != null">-->
+<!--                age = #{age}-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        where id = #{id}-->
+<!--    </update>-->
+
+<!--     更新操作 使用 trim标签试下
+       trim  自定义 更新操作
+            prefix 配置前缀  set
+            prefixOverrides  把条件中的多余的  and/or干掉
+            suffixOverrides  把条件中多余的 , 干掉
+-->
+        <update id="updateUserByNotNUll" parameterType="User">
+            update user
+            <trim prefix="set" suffixOverrides=",">
+                <if test="name != null">
+                    name = #{name},
+                </if>
+                <if test="password != null">
+                    password = #{password},
+                </if>
+                <if test="age != null">
+                    age = #{age}
+                </if>
+            </trim>
+            where id = #{id}
+        </update>
+<!--
+        删除的sql:
+           delete from user where id in (1,2,3)
+         (1,2,3)这个字符串的处理 动态的sql的拼接:
+
+         foreach  循环的标签  java中的for循环一样
+         collection  获取集合参数
+         open   开始  (
+         item   集合中的元素 id
+         close  结束  )
+         separator 分隔符 () 中的元素需要有分隔符
+-->
+    <delete id="deleteBatchByid" parameterType="list">
+        delete from user where id in
+        <foreach collection="ids" open="(" item="id" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+<!--    查询 -->
+    <select id="selectUserByIds" parameterType="list" resultType="User">
+        select * from  user where id in
+        <foreach collection="list" open="(" item="id" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+<!--    批量添加
+        insert into user(name,password,age) values ((aa,bb,30),(bb,bb,30),(cc,bb,30))
+        通过循环拼接   (aa,bb,30),(bb,bb,30),(cc,bb,30)
+          (#{u.name},#{u.password},,#{u.age}), (#{u.name},#{u.password},,#{u.age}),
+
+      细节: 批量添加 不用使用 open/close
+           ()后面不要加, 使用 separator 来处理
+-->
+    <insert id="inserUsers" parameterType="list">
+        insert into user(name,password,age) values
+        <foreach collection="us" item="u" separator=",">
+            (#{u.name},#{u.password},#{u.age})
+        </foreach>
+    </insert>
+
+<!--
+     mapper.xml 中的常用的sql标签:
+       01 基本的增删改查标签:
+            select (查询)标签   属性: id, 方法的名称  parameterType, 方法的参数 resultType  放回返回结果
+            update (更新)
+            insert (添加)
+            delete (删除)
+
+            resultMap 标签  结果集映射成java对象的标签
+               id  映射 结果集中的主键
+               result 映射 结果集中的非主键
+                   column  映射对应的列名
+                   prototype  映射对应的对象的属性
+       02 动态的sql标签:
+          <where>  可以拼接where关键字,如果没有条件不会拼接where关键字,
+                   如果有多余的and/or 删除 保证sql的正确性
+          <if test="">  判断,如果test中的运算,结果为true,才会拼接if标签中的sql语句
+          <trim>标签 自定义where/set 操作
+          <sql> 标签 可以把重复的sql代码抽成一个代码片段,在多出进行引用
+          <include> 标签 可以引用sql代码片段
+          <set>  标签 更新标签
+           <foreach> 标签   循环标签
+               collection=xxx  循环的集合
+               separator 集合元素中的分隔符
+               open  循环开始可置 (
+               item  集合中的元素
+               close 循环介绍设置 )
+
+  -->
+
+</mapper>

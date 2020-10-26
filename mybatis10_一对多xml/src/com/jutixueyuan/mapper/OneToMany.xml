@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jutixueyuan.mapper.OneToMany">
+
+<!--
+     select嵌套查询 :先查询 dept, 再次发送一次sql 查询 emp数据
+-->
+<!--   <select id="findDeptById" parameterType="integer" resultMap="rs_dept">-->
+<!--       select d.id did,d.name dname from dept d where id = #{id}-->
+<!--   </select>-->
+
+<!--    <resultMap id="rs_dept" type="Dept">-->
+<!--&lt;!&ndash;        dept 的id/name 属性的映射 &ndash;&gt;-->
+<!--        <id column="did" property="id"></id>-->
+<!--        <result column="dname" property="name"></result>-->
+<!--&lt;!&ndash;-->
+<!--            dept的 emps 的属性  集合属性-->
+<!--            使用 collection 进行多对一的映射-->
+<!--            column 使用那个字段查询 emp表-->
+<!--            select 在发送一次sql,查询 emp的数据 (这个sql要自己写)-->
+
+<!--            collection  这个标签 在 resultMap中 映射 一对多操作-->
+<!--            association  在 resultMap 中映射 一对一的操作-->
+<!--&ndash;&gt;-->
+<!--        <collection column="did" property="emps" select="findEmpByDpetId">-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+
+<!--&lt;!&ndash;    通过dept的id 查询 emp的表的数据 把这些数据放到集合中赋值给 dept的emps属性&ndash;&gt;-->
+<!--    <select id="findEmpByDpetId" parameterType="integer" resultType="Emp">-->
+<!--        select * from emp where dept_id = #{did}-->
+<!--    </select>-->
+
+    <!--
+    等值连接查询
+-->
+    <select id="findDeptById" parameterType="integer" resultMap="rs_dept">
+        select d.id did,d.name dname,e.id eid,e.name ename from dept d join emp e on d.id = e.dept_id
+        where d.id = #{id}
+    </select>
+
+    <resultMap id="rs_dept" type="Dept">
+<!--        映射 dpet 的id/name 属性-->
+        <id column="did" property="id"></id>
+        <result column="dname" property="name"></result>
+<!--        映射  emps 的属性  集合的映射 使用 collection
+              ofType : 需要映射集合的泛型的类型
+-->
+        <collection property="emps" ofType="Emp">
+            <id column="eid" property="id"></id>
+            <result column="ename" property="name"></result>
+        </collection>
+    </resultMap>
+</mapper>

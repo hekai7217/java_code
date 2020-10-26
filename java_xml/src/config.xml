@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<environments default="development">
+    <environment id="development">
+        <!--            事务的配置   JDBC  可以 提交数据和进行 回滚 -->
+        <transactionManager type="JDBC"/>
+        <!--      dataSource 数据源   数据库连接池 POOLED  反应速度快 效率高    -->
+        <dataSource type="POOLED">
+            <!--           数据库连接的四要素      -->
+            <property name="driver" value="com.mysql.jdbc.Driver"/>
+            <property name="url" value="jdbc:mysql://localhost:3306/mybatis"/>
+            <property name="username" value="root"/>
+            <property name="password" value="root"/>
+        </dataSource>
+    </environment>
+</environments>

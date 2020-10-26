@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jutixueyuan.mapper.UserMapper">
+
+<!--  规则: mapper接口和 mapper 映射的规则
+       01  命令空间 要对应接口的全限定名 (包名 + 类名)
+       02  mapper.xml中的sql 标签的id和 接口中的方法名称一致
+       03  mapper.xml中的sql  参数类型和 接口中的参数类型一致
+       04  mapper.xml中的sql  返回结果 和 接口中的方法返回结果一致一致
+
+      写sql的标签:
+       01 标签 + id 结束
+       02 参数和返回值
+       03 写sql
+   -->
+
+    <select id="selectUserById" parameterType="integer" resultType="com.jutixueyuan.bean.User">
+        select * from user where id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    xml的版本 和编码
+ -->
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--  mybatis.dtd 约束文件
+      xml的 中的标签 一定 要按照约束来写
+ -->
+<configuration>
+
+<!--  configuration 配置标签   -->
+<!-- environments 环境标签
+       environment 环境可以配置多个
+          比如开发环境
+             测试环境
+             通过 的   default 指定的 environment 的id切换环境
+   -->
+    <environments default="development">
+        <environment id="development">
+<!--            事务的配置   JDBC  可以 提交数据和进行 回滚 -->
+            <transactionManager type="JDBC"/>
+<!--      dataSource 数据源   数据库连接池 POOLED  反应速度快 效率高    -->
+            <dataSource type="POOLED">
+                <!--           数据库连接的四要素      -->
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+<!--        上面的配置是连接数据库  -->
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+<!--        配置mapper.xml 文件  文件包名使用/ -->
+        <mapper resource="com/jutixueyuan/mapper/UserMapper.xml"/>
+    </mappers>
+
+</configuration>

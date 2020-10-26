@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <environments default="development">
+        <environment id="development">
+            <!--            事务的配置   JDBC  可以 提交数据和进行 回滚 -->
+            <transactionManager type="JDBC"/>
+            <!--      dataSource 数据源   数据库连接池 POOLED  反应速度快 效率高    -->
+            <dataSource type="POOLED">
+                <!--           数据库连接的四要素      -->
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf-8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+<!--  如果是xml开发  配置mapper的.xml
+            mapper属性 配置  resource   资源的路径是xx/xx/xxx.xml
+        -->
+<!--        <mapper resource="com/jutixueyuan/mapper/UserMapper.xml"/>-->
+<!--      如果是注解开发  配置的是 mapper的接口
+           mapper属性 配置  class   类的全限定名是: com.xx.xxxMapper
+           -->
+        <mapper class="com.jutixueyuan.mapper.UserMapper"></mapper>
+        
+<!--        <package name="com.jutixueyuan.mapper"/>-->
+
+    </mappers>
+
+</configuration>

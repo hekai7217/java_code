@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<!--      读取 数据库的db配置文件
+            01.  config  把 配置文件添加到  config文件中
+            02   通过${} 表达获取db配置文件中的数据
+            03   把获取到的数据 配置到  数据库连接中
+ -->
+
+    <properties resource="db.properties"></properties>
+
+    <settings>
+<!--      配置 日志
+           自己配置日志: 如果没有配置 添加 jar / log4j.properties mybatis 会加载,自动查找
+-->
+        <setting name="logImpl" value="LOG4J"/>
+
+        <!-- 默认不支持骆驼命名法 需要手动配置  -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+    </settings>
+
+
+<!--    配置别名
+         自己的配置的
+-->
+    <typeAliases>
+<!--
+        typeAlias 配置别名的标签
+             type  类型
+             alias 别名
+        配置了别名后, mapper.xml 参数和返回值 直接给user 就可以  可以忽略大小写
+-->
+<!--        <typeAlias type="com.jutixueyuan.bean.User" alias="user"></typeAlias>-->
+<!--        <typeAlias type="com.jutixueyuan.bean.Stu" alias="stu"></typeAlias>-->
+<!--        <typeAlias type="com.jutixueyuan.bean.Phone" alias="phone"></typeAlias>-->
+<!--        如果别名有很多 可以配置 package
+        	name ： 对应要取别名的包，自动会为包下面的所有的类取别名，别名就是当前类名的简单名称 User
+-->
+        <package name="com.jutixueyuan.bean"/>
+
+    </typeAliases>
+
+
+    <environments default="dev">
+        <environment id="dev">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+
+                <property name="driver" value="${jdbc.driverClassName}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+<!--
+        为啥有mapper?
+         mybatis 不会自己找对应的mapper.xml的sql   需要手动设置
+         01 resource  配置 xxx/xxx/xxx.xml (配置xml的文件资源)
+         02 class     配置 xxx.xxx.xxx   (java类的全限定名 (mybatis如果sql是注解 需要这个配置))
+             容易犯错:注解开发 包的层次是.   如果是xml的资源 包的层次是 /
+         03  <package name="com.jutixueyuan.mapper"/>  将包内的映射器接口实现全部注册为映射器
+
+        Mapper接口 和 Mapper.xml  一定要放在一起吗?
+          无所谓 可以放在一起可以不放一起, 在config文件中 告诉mybatis去哪儿找mapper.xml 就可以
+          推荐大家放在一起,少很多事情
+
+       Mapper接口和 Mapper.xml 名称可以不用取mapper 可以随便取, 为了规范 取名xxxMapper,一般都是mapper接口和mapper.xml
+       名称一致
+
+       总结: mapper配置  告诉 mybatis去哪里找sql.xml文件
+            mapper接口和 mapper.xml 放到指定的mapper文件夹中
+            mapper接口和mapper.xml  命名一致
+
+-->
+    <mappers>
+        <mapper resource="mapper/BeanUserMapper.xml"></mapper>
+        <mapper resource="com/jutixueyuan/mapper/UserMapper.xml"></mapper>
+<!--        <mapper class="com.jutixueyuan.mapper.BeanUserMapper"></mapper>-->
+<!--        <package name="com.jutixueyuan.mapper"/>-->
+    </mappers>
+
+</configuration>

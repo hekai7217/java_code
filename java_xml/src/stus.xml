@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 解析 xml
+       把xml中的 studeng 节点 中数据读取出来
+       dom4j 解析
+
+       xml的应用:
+       01 存储数据  db / 数据交换 用户的是json对象
+       02  配置文件
+          properties 做简单的配置文件
+          xml        可以做复杂的配置文件
+       使用xml 配置一个类,配置一个方法
+         通过解析xml文件通过反射调用一个方法
+-->
+<students>
+    <student sid="001">
+        <name>张无忌</name>
+        <age>20</age>
+        <phone>1234</phone>
+    </student>
+
+    <student sid="002">
+        <name>赵敏</name>
+        <age>22</age>
+        <phone>1234</phone>
+    </student>
+</students>

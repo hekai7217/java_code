@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jutixueyuan.mapper.ManyToOne">
+
+<!--    查询操作  多对一的操作 -->
+<!--   关联查询   解决方案，使用关联查询  先查询Emp表, 再发送一次sql 查询 dept表
+                  把查询的dept表的结果封装到 emp对象中的dept属性中
+        多表操作 返回 的结果 需要使用resultMap 结果进映射
+  -->
+<!--    <select id="findEmpById" parameterType="integer" resultMap="rs_emp">-->
+<!--        select * from emp where id = #{id}-->
+<!--    </select>-->
+
+<!--  <resultMap id="rs_emp" type="Emp">-->
+<!--&lt;!&ndash;      映射 emp的id 和 name属性  &ndash;&gt;-->
+<!--       <id column="id" property="id"></id>-->
+<!--       <result column="name" property="name"></result>-->
+<!--&lt;!&ndash;    映射 emp的 dept的属性-->
+<!--           我们映射 dept属性  再发送一次sql 查询 dept表-->
+<!--        association  映射 emp的对象dept (一对一映射  一个emp中只有一个dept)-->
+<!--        通过外键 查询 dept者个表-->
+<!--           select  再发送一次sql 查询 dept表 给selectId就可以-->
+<!--  &ndash;&gt;-->
+<!--      <association column="dept_id" property="dept" javaType="com.jutixueyuan.bean.Dept"-->
+<!--      select="com.jutixueyuan.mapper.ManyToOne.findDeptById">-->
+<!--      </association>-->
+<!--  </resultMap>-->
+<!--&lt;!&ndash;    查询 dept 返回 dept 把dept 映射到 emp 的属性中 &ndash;&gt;-->
+<!--   <select id="findDeptById" parameterType="integer" resultType="Dept">-->
+<!--       select * from dept where id = #{dept_id}-->
+<!--   </select>-->
+
+<!--    等值连接的查询 -->
+    <select id="findEmpById" parameterType="integer" resultMap="rs_map">
+        select e.id eid,e.name ename,d.id did,d.name dname from emp e join dept d on e.dept_id = d.id
+        where e.id = #{id}
+    </select>
+
+    <resultMap id="rs_map" type="Emp">
+<!--        映射 emp的属性 id,name -->
+        <id column="eid" property="id"></id>
+        <result column="ename" property="name"></result>
+<!--        映射 dept 属性  association 映射对象 -->
+        <association property="dept" javaType="com.jutixueyuan.bean.Dept">
+            <id column="did" property="id"></id>
+            <result column="dname" property="name"></result>
+        </association>
+    </resultMap>
+
+</mapper>

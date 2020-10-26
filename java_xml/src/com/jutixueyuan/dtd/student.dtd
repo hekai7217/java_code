@@ -1,0 +1,16 @@
+<!ELEMENT students (student*) >
+<!--
+    ELEMENT 元素   元素标签 students  可以有多个 student 标签
+ -->
+<!ELEMENT student (name,age,sex)>
+<!--
+        ELEMENT 元素   元素标签 student 可以哟 标签 name,age,sex, 顺序也不能错误
+-->
+<!ELEMENT name (#PCDATA)>
+<!-- 元素 name 标签  中可以写文本 -->
+<!ELEMENT age (#PCDATA)>
+<!ELEMENT sex (#PCDATA)>
+<!ATTLIST student number CDATA #REQUIRED>
+<!-- 多个student标签 必须有number 属性  -->
+
+<!--上面就是 dtd 的约束规则-->

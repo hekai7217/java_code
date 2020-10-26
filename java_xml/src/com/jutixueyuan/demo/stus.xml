@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 版本号  和 编码 -->
+<!-- 根标签
+     xml的约束: 定义 xml结果的规范
+       约束要求: 能写简单的约束,能看得懂基本的约束文件
+       (后面的框架中 约束人家都提供好了 会使用能看懂就可以 )
+
+       dtd
+       xsd
+-->
+<students>
+
+    <student sid="001">
+        <name>张无忌</name>
+        <age>20</age>
+        <phone>1234</phone>
+    </student>
+
+    <student sid="002">
+        <name>赵敏</name>
+        <age>22</age>
+        <phone>1234</phone>
+    </student>
+
+</students>

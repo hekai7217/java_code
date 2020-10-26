@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 版本和 编码  -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+   mapper.xml 和接口绑定的要求:
+    01  namespace 命令空间必须和 接口的全限定名一致
+    02 sql的id 必须是 接口中的方法名一致
+    03 sql的参数必须和接口中的方法类型一致
+    04 sql 的放回结果必须和接口中的返回值一致
+
+    select  查询标签
+      属性  id  和方法名进行绑定
+            parameterType  参数    java.lang.Integer 或者integer/int
+            resultType     返回结果
+            获取 方法的参数的写法: ognl 语法 通过 #{xx} , ${xx} 获取对象中的值或者map中的值
+   不要忘了 在 config.xml 中配置 mapper
+-->
+<mapper namespace="com.jutixueyuan.mapper.UserDao">
+    <select id="selectUserById" parameterType="int" resultType="com.jutixueyuan.bean.User">
+        select * from user where id = #{id}
+    </select>
+<!--
+        insert添加的标签
+          id 唯一标记
+          parameterType 参数
+          添加没有返回值,写的时候默认返回int (数据库响应的行数)
+
+          #{获取user中的属性值}
+
+      01 写sql的时候 添加注意些 user的表的字段
+      02 添加中文乱码 数据库乱码 ?
+         解决: 在url上添加 ?useUnicode=true&characterEncoding=utf8  (前提是数据库的编码格式是utf-8)
+
+      03  添加的时候, 获取返回添加的 自增的id ?
+           useGeneratedKeys  是否返回数据库生成的主键 true是/false否
+           keyColumn="id"     配置数据库的表的主键字段
+           keyProperty="id"   配置对象的属性主键
+-->
+    <insert id="insertUser" parameterType="com.jutixueyuan.bean.User"
+            useGeneratedKeys="true"
+            keyProperty="id"
+            keyColumn="id"
+    >
+        insert into user(id,name,age,password) values (default,#{name},#{age},#{password})
+    </insert>
+
+<!--
+        delete 删除标签
+          删除 默认返回int
+         注意:
+            01  给条件
+            02  提交事务
+-->
+    <delete id="deleteUserById" parameterType="integer">
+        delete from user where id = #{id}
+    </delete>
+<!--
+        update 修改标签
+         修改注意:
+            如果这个对象的 属性为null   会把数据库的数据修改为null
+            解决:使用动态sql 解决
+-->
+    <update id="updateUser" parameterType="com.jutixueyuan.bean.User">
+        update user set name = #{name},age = #{age},password = #{password} where id = #{id}
+    </update>
+
+<!--   多行操作  查询所有
+        mybatis的查询:
+           返回结果结果配置 集合中的泛型就可以
+         List<User>     泛型是user  只需要配置user就可以
+-->
+    <select id="findUser" resultType="com.jutixueyuan.bean.User">
+        select * from user
+    </select>
+
+<!--     如果  sql 的查询结果集 和 user对象的属性不一致
+         映射操作,属性不一致  映射结果为null
+
+         解决: 使用resultmap 手动进行映射
+-->
+    <select id="selectPrimarykeyById" resultMap="rs_map">
+         select id u_id ,name u_name,password pwd,age from user where id = #{id}
+    </select>
+<!--    配置 一个结果映射  resultMap
+           id 属性 select标签中 resultMap 属性可以应用 当前的id名称
+           type  你需要手动映射的 java的类 (全限定名 = 包名 + 类名)
+-->
+    <resultMap id="rs_map" type="com.jutixueyuan.bean.User">
+
+<!--        主列的映射  主键对应的列   映射对象的属性和结果集字段的映射
+             column  查询结果集的列       jdbcType 数据库的类型
+             property  java类的属性名称   javaType  java的类型
+             数据量mybatis 底层会自己判断
+                javaType/jdbcType 可以省略
+-->
+        <id column="u_id" jdbcType="INTEGER" property="id" javaType="integer"></id>
+<!--        非主列的映射  非主键对应的列
+            result
+-->
+        <result column="u_name"  property="name"></result>
+        <result column="pwd" property="password"></result>
+        <result column="age" jdbcType="INTEGER" property="age" javaType="INTEGER"></result>
+    </resultMap>
+
+</mapper>
