@@ -39,7 +39,7 @@
                 <td>${stu.age}</td>
                 <td>${stu.info}</td>
                 <td>
-                    <a href="#"> 修改 </a>
+                    <a href="/web07/findStuById?id=${stu.id}"> 修改 </a>
 <%--                    可以通过 a标签中 在url上传递 id编号进行删除 --%>
                     <a href="/web07/delStu?id=${stu.id}">  删除 </a>
                 </td>

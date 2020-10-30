@@ -6,6 +6,7 @@ import com.jutixueyuan.service.StuService;
 import com.jutixueyuan.utils.MybatisUtils;
 import org.apache.ibatis.session.SqlSession;
 
+import javax.swing.text.Style;
 import java.util.List;
 
 /**
@@ -39,6 +40,51 @@ public class StuServiceImpl implements StuService {
         int i = mapper.delStu(id);
         sqlSession.commit();
         MybatisUtils.close(sqlSession);
+        return i > 0 ;
+    }
+
+    @Override
+    public boolean addStu(Stu stu) {
+
+        // 01 获取sqlsession
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        // 02 获取mapper
+        StuMapper mapper = sqlSession.getMapper(StuMapper.class);
+        // 03 获取 调用方法
+        int i = mapper.addStu(stu);
+        sqlSession.commit();
+        MybatisUtils.close(sqlSession);
+
+        return i > 0 ;
+    }
+
+    @Override
+    public Stu findStuById(int id) {
+
+        // 01 获取sqlsession
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        // 02 获取mapper
+        StuMapper mapper = sqlSession.getMapper(StuMapper.class);
+        // 03 获取 调用方法
+        Stu stu = mapper.findStuById(id);
+        // 04 关闭资源
+        MybatisUtils.close(sqlSession);
+
+        return stu;
+    }
+
+    @Override
+    public boolean updateStu(Stu stu) {
+
+        // 01 获取sqlsession
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        // 02 获取mapper
+        StuMapper mapper = sqlSession.getMapper(StuMapper.class);
+        // 03 获取 调用方法
+        int i = mapper.updateStu(stu);
+        sqlSession.commit();
+        MybatisUtils.close(sqlSession);
+
         return i > 0 ;
     }
 
