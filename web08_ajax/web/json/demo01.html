@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>json的基本语法</title>
+</head>
+<body>
+
+<script>
+
+    // json的2个基本的语法:
+
+    // 01键值对的集合:
+    // 01 { 开始  } 结尾
+    // 02  键值对和键值对用,隔开
+    // 03 key是支持 ,value是任意类型
+    // key的字符串 "" 可以省略
+    var jsonObj1 = {"name":"马云","age":40};
+    var jsonObj2 = {name:"马化腾",age:43};
+
+    // 对象.属性 获取json的值
+    console.log(jsonObj1.name);
+    console.log(jsonObj1.age);
+
+    console.log(jsonObj2.name);
+    console.log(jsonObj2.age);
+
+    // json的嵌套  value可以是对象
+    var jsonObj3 = {
+        "name":"马云",
+        "age":40,
+        "phone":{
+            "brand":"华为",
+            "price":"6888"
+        }
+    };
+
+    // 获取嵌套的json的属性值
+    // 先通过属性拿到phone属性 通过属性拿到brand/price
+
+    console.log(jsonObj3.phone.brand);
+    console.log(jsonObj3.phone.price);
+
+    // 02 数组:
+    //  01  以[ 开始  ] 结尾
+    //  02  值和值之间用,隔开
+    var jsonObj4 = ["乔峰","段誉","虚竹"];
+    // json的数组的数据格式 和 数组没有区别
+
+    // 通过下标获取json对象的值
+    console.log(jsonObj4[0]);
+    console.log(jsonObj4[2]);
+
+    // 数组json 也可以嵌套
+    var jsonObj5 = [{"name":"庄媛媛","age":25},{"name":"段正淳","age":"43"}];
+
+    // 通过下标拿到对象 通过属性拿到指定的值
+    console.log(jsonObj5[0].name);
+    console.log(jsonObj5[0].age);
+
+
+</script>
+
+</body>
+</html>

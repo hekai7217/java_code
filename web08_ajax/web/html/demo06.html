@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>服务器返回json数据浏览器展示数据</title>
+    <script src="/web08/js/ajaxutils.js"></script>
+</head>
+<body>
+
+<!--
+    需求: input输入内容,服务器返回json数据, 浏览器拿到json数据
+      通过dom操作展示数据
+      思路:
+        01 通过ajax 把输入的内容发送到服务器
+        02 拿到服务器返回的json 转成json对象
+        03 dom操作展示数据
+-->
+<input id="nameId" type="text">
+<button onclick="findPerson()">搜索</button>
+<p id="name"></p>
+<p id="age"></p>
+<p id="info"></p>
+
+<script>
+
+    function findPerson(){
+
+        // 拿到input输入的内容
+       var name = document.getElementById("nameId").value;
+
+        ajax(
+            "get",
+            "/web08/ajax04",
+            true,
+            "name=" +name,
+            function (data) {
+                console.log(data);
+                // 把字符串转成json对象
+                var obj = JSON.parse(data);
+                // dom操作 刷新页面
+                document.getElementById("name").innerText = "姓名:" + obj.name;
+                document.getElementById("age").innerText = "年龄:" + obj.age;
+                document.getElementById("info").innerText = "描述:" + obj.info;
+            }
+        );
+    }
+
+</script>
+
+</body>
+</html>

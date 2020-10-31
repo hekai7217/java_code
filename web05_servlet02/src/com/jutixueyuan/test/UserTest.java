@@ -34,7 +34,6 @@ public class UserTest {
         map.put("age","53");
 
         // 写一个方法 把map转成一个bean对象  (把map中的数据赋值给 bean对象的属性)
-
         try {
             User u = mapToBean(map, User.class);
             System.out.println("u = " + u);

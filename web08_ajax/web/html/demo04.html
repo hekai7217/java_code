@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax的同步和异步</title>
+</head>
+<body>
+
+<button onclick="sendGetData()">get发送数据</button>
+
+
+<button onclick="alert('点我')">点我</button>
+
+
+<script>
+    function sendGetData(){
+
+        // 01 创建 发送数据的ajax, XmlHttpRequest
+        var xhr = new XMLHttpRequest();
+        // 02  监听 XmlHttpRequest 的状态
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200){
+                alert(xhr.responseText);
+            }
+        }
+        // 03  初始化 XmlHttpRequest
+        // ajax的 get请求 参数在url上拼接
+        // open的方法 有参数3
+        // boolean  async  是否异步 默认是异步
+        // async = true
+        // 异步, ajax的发送在异步发送(子线程中执行), 不影响整个页面的其他的操作,返回了服务器结果,处理数据
+        // async = false
+        //同步, ajax的发送在主线程中操作, 如果服务器在进行耗时操作, 整个页面挂起,不能做其他的操作,等待服务器响应结果 才可以做其他的事情
+        // 马云请求吃饭, 同步 直跟着他后面 等着吃饭
+        // 马云请求吃饭, 异步 你就正常写代码工作, 7点和马云在指定的地方吃饭
+
+        xhr.open("get","/web08/ajax03",true)
+        // 04  发送请求
+        xhr.send();
+    }
+
+</script>
+
+
+</body>
+</html>

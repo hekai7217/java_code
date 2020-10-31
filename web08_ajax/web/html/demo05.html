@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试ajax的封装</title>
+    <script src="/web08/js/ajaxutils.js"></script>
+</head>
+<body>
+
+<button onclick="sendGetData()">get发送数据</button>
+<button onclick="sendPostData()">post发送数据</button>
+<script>
+
+
+    function sendGetData(){
+
+        ajax(
+            "get",   // 请求方式
+            "/web08/ajax02",  // 请求的url
+            true,  //是否异步
+            "name=scott&pwd=tiger", //请求参数
+            function (data) {   // 成功执行的方法
+                alert(data);
+            }
+        )
+    }
+
+    function sendPostData(){
+
+        ajax(
+            "post",   // 请求方式
+            "/web08/ajax02",  // 请求的url
+            true,  //是否异步
+            "name=kkk&pwd=111", //请求参数
+            function (data) {   // 成功执行的方法
+                alert(data);
+            }
+        )
+    }
+
+
+
+</script>
+</body>
+</html>

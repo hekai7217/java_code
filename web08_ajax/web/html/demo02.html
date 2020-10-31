@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XMLHttpRequest 的属性和方法</title>
+</head>
+<body>
+XMLHttpRequest的属性:
+<br>
+readyState 属性 :<br>
+ 0：未初始化。对象已创建，未调用open；<br>
+ 1：open方法成功调用，但Send方法未调用；<br>
+ 2：send方法已经调用，尚未开始接受数据；<br>
+ 3：正在接受数据。Http响应头信息已经接受，但尚未接收完成；<br>
+ 4：完成，即响应数据接受完成。<br>
+<br>
+status 属性:
+  服务器的返回的http的状态码:
+<br>
+    200 成功<br>
+    404 路径找不到 url写错误了<br>
+    500 服务器的问题<br>
+<br>
+responseText  服务器给回写的数据
+<br>
+onreadystatechange<br>
+监听readState 状态触发器, 如果 readyState 属性发生了变化
+onreadystatechange 会监听到,执行对应的触发函数
+
+<br>
+XMLHttpRequest的的方法:
+<br>
+method请求的方法<br>
+url 请求地址<br>
+asynch 是否异步<br>
+<br>
+open(string method,string url,boolean asynch)<br>
+初始化,xhr的组件,<br>
+send(content) 向服务器发送数据 ,<br>
+<br>
+SetRequestHeader(String header,String Value)<br>
+给服务器发送头信息 ,post 需要发送头信息 (request.setRequestHeader("Content-Type",
+"application/x-www-form-urlencoded");)<br>
+告诉 服务器的数据格式,键值对的格式,一般用于open方法的后面
+
+</body>
+</html>

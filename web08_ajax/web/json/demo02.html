@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>json对象和字符串之间的转换</title>
+</head>
+<body>
+
+<script>
+
+    // json对象转成 字符串
+    // json对象
+    var jsonOjb01 = {"name":"尹志平","age":"28"};
+    // json字符串 如果用"" /'' 包裹字符串
+    var jsonOjb02 = '{"name":"尹志平","age":"28"}';
+
+    // json对象转成字符串   js的json框架 JSON js中默认集成了 可以直接使用
+    // stringify 把json转成字符串
+    var str1 = JSON.stringify(jsonOjb01);
+    console.log(jsonOjb01);
+    console.log(str1);
+
+    // 字符串转成json对象
+    var jsonObj3 = JSON.parse(jsonOjb02);
+    console.log(jsonObj3);
+
+    // 通过json对象 属性拿到数值
+    console.log(jsonObj3.name);
+    console.log(jsonObj3.age);
+
+    // 错误的写法
+    // console.log(str1.name);
+    // console.log(str1.age);
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jq使用ajax</title>
+    <script src="/web08/js/jquery-1.9.1.js"></script>
+</head>
+<body>
+
+<!--
+    需求:
+     01 输入 用户名 发送数据到服务器  判断这个用户是否已存在
+
+     02 如果存在 提示 用户不能使用
+        如果不存在 提示 用户名可以使用
+    实现思路:
+       自己写的ajax 不好用 使用jquery提供的ajax
+       01 学习jquery使用ajax
+          01 失去焦点发送ajax 请求
+       02 使用jq 进行dom操作
+-->
+输入用户名:<input id="nameId" type="text"><span id="msgId"> </span>
+
+<script>
+
+    $("#nameId").blur(function () {
+            // 发送ajax
+            // jq 提供ajax的方法
+            //JQuery.get(method,url,func,type){
+            //         url:待载入页面的URL地址
+            //         data:待发送 Key/value 参数。( { name: "John", time: "2pm" } json格式)
+            //         func:载入成功时回调函数。
+            //         type:返回内容格式 json
+            // }
+            var name = $("#nameId").val();
+            // $.get(
+            //     "/web08/ajax05",    // url 请求的地址
+            //     {
+            //         name:name    //提交的参数
+            //     },
+            //     function (data) {  // 成功执行的函数
+            //         console.log(data);
+            //         if (data.flag){  // 如果为true  提示  用户名可以使用 dom操作
+            //             $("#msgId").text(data.msg).css("color","green");
+            //         }else{
+            //             $("#msgId").text(data.msg).css("color","red");
+            //         }
+            //     },
+            //     "json"   //返回的数据类型
+            // );
+
+        // get   获取服务器的数据
+        // post  提交数据到服务器
+
+        $.post(
+            "/web08/ajax05",    // url 请求的地址
+            {
+                name:name    //提交的参数
+            },
+            function (data) {  // 成功执行的函数
+                console.log(data);
+                if (data.flag){  // 如果为true  提示  用户名可以使用 dom操作
+                    $("#msgId").text(data.msg).css("color","green");
+                }else{
+                    $("#msgId").text(data.msg).css("color","red");
+                }
+            },
+            "json"   //返回的数据类型
+        );
+
+    });
+
+</script>
+
+
+
+
+</body>
+</html>

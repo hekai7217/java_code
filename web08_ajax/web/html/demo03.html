@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax 给服务发送数据</title>
+</head>
+<body>
+
+<button onclick="sendGetData()">get发送数据</button>
+<button onclick="sendPostData()">post发送数据</button>
+
+<script>
+
+    // 总结 ajax get 和post 的区别
+    //  get 参数在url上面进行拼接
+    //  post 参数需要在send中发送, post 需要发送头信息 告诉 服务器数据格式
+    //   xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+    function sendPostData(){
+
+        // ajax的操作步骤:规定模式
+        // 01 创建 发送数据的ajax, XmlHttpRequest
+        var xhr = new XMLHttpRequest();
+        // 02  监听 XmlHttpRequest 的状态
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState == 4 && xhr.status == 200){
+                alert(xhr.responseText);
+            }
+
+        }
+        // 03  初始化 XmlHttpRequest
+        // post 请求需要发送数据
+        // post 需要设置头信息 告诉服务器 数据格式是 键值对
+        xhr.open("post","/web08/ajax02")
+
+        xhr.setRequestHeader("Content-Type",
+        "application/x-www-form-urlencoded")
+        // 04  发送请求
+        xhr.send('name=root&pwd=123');
+
+    }
+
+    function sendGetData(){
+
+        // 01 创建 发送数据的ajax, XmlHttpRequest
+        var xhr = new XMLHttpRequest();
+        // 02  监听 XmlHttpRequest 的状态
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200){
+                alert(xhr.responseText);
+            }
+        }
+        // 03  初始化 XmlHttpRequest
+        // ajax的 get请求 参数在url上拼接
+        xhr.open("get","/web08/ajax02?name=scott&pwd=tiger")
+        // 04  发送请求
+        xhr.send();
+    }
+
+
+</script>
+
+</body>
+</html>

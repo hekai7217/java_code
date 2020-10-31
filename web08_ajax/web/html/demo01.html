@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax的入门程序</title>
+</head>
+<body>
+
+<button onclick="helloAjax()">ajax的入门程序</button>
+
+<script>
+
+    // ajax 的入门程序 ,访问 服务器, 服务器给浏览器回写了一条数据
+
+    // ajax的操作步骤:规定模式
+    // 01 创建 发送数据的ajax, XmlHttpRequest
+    // 02  监听 XmlHttpRequest 的状态
+    // 03  初始化 XmlHttpRequest
+    // 04  发送请求
+
+    function helloAjax(){
+
+        //  01 创建 发送数据的ajax, XmlHttpRequest
+        var xhr = new XMLHttpRequest();
+
+        // 02 监听 xhr的状态
+        // onreadystatechange 监听  state状态的变化 ,如果状态发生了变化 会执行 右边的函数
+
+        // readyState 属性 :
+        // 0：未初始化。对象已创建，未调用open；
+        // 1：open方法成功调用，但Send方法未调用；
+        // 2：send方法已经调用，尚未开始接受数据；
+        // 3：正在接受数据。Http响应头信息已经接受，但尚未接收完成；
+        // 4：完成，即响应数据接受完成。
+        // status 状态吗  200 是成功  404 找不到  500 服务器有问题
+        xhr.onreadystatechange = function () {
+            //只 关心 状态 4  能接受到服务器的回写数据
+            // status =200  请求成功
+            if (xhr.readyState == 4 && xhr.status == 200 ){
+                //  服务器回写的 文本
+                alert(xhr.responseText);
+            }
+
+        }
+
+        // 03  初始化 XmlHttpRequest
+        //  method,  请求的 http的方式get/post
+        //  url      请求的地址
+        xhr.open("get","/web08/ajax01");
+        // xhr.open("get","http://localhost:8080/web08/ajax01");
+        // 04 发送数
+        // get请求 不用发送数据
+        // post请求 才发送数据
+        xhr.send();
+
+    }
+
+
+</script>
+
+
+</body>
+</html>
