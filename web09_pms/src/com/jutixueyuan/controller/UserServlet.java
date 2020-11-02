@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.IntBuffer;
 import java.sql.ResultSet;
 import java.util.Date;
 import java.util.EmptyStackException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,10 +56,65 @@ public class UserServlet extends HttpServlet {
             if (method.equals("addUser")){
                 addUser(req,resp);
             }
+            // 查询所有
+            if (method.equals("queryAll")){
+                queryAll(req,resp);
+            }
+
+            if (method.equals("delStu")){
+                delStu(req,resp);
+            }
+
 
         }
 
 
+
+    }
+
+    /**
+     *  删除
+     * @param req
+     * @param resp
+     */
+    private void delStu(HttpServletRequest req, HttpServletResponse resp)  throws ServletException, IOException {
+
+        // 01 拿到数据
+        String id = req.getParameter("id");
+        UserService userService = new UserServiceImpl();
+        boolean flag = userService.delStu(Integer.parseInt(id));
+
+        Result rs = null;
+
+        if (flag){
+            // 删除功
+            rs = new Result(500,"删除成功...");
+        }else{
+            // 删除失败
+            rs = new Result(501,"删除失败");
+        }
+        resp.getWriter().write(JSON.toJSONString(rs));
+    }
+
+    /**
+     * 查询所有
+     * @param req
+     * @param resp
+     */
+    private void queryAll(HttpServletRequest req, HttpServletResponse resp)  throws ServletException, IOException {
+
+        // 02 调用方法
+        UserService userService = new UserServiceImpl();
+        List<User> list = userService.queryAll();
+
+        // 03 回写数据
+        //   查询的是 所有的user 把user发送到 jsp 页面展示
+        if (list.size() > 0){
+            req.setAttribute("users",list);
+            req.getRequestDispatcher("/page/user/users.jsp").forward(req,resp);
+        }else{
+            resp.getWriter().write("查询数据为空");
+        }
 
     }
 

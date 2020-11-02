@@ -22,4 +22,15 @@
 
     </insert>
 
+<!--    查询所有 -->
+    <select id="queryAll" resultType="User">
+        select * from t_sysuser
+    </select>
+
+<!--    删除操作 -->
+    <delete id="delStu" parameterType="integer">
+        delete from t_sysuser where id = #{id}
+    </delete>
+
+
 </mapper>

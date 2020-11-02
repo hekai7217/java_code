@@ -2,6 +2,8 @@ package com.jutixueyuan.service;
 
 import com.jutixueyuan.bean.User;
 
+import java.util.List;
+
 /**
  * @author 黄药师
  * @date 2020-10-31 16:58
@@ -30,4 +32,17 @@ public interface UserService {
      * @return
      */
     boolean addUser(User user);
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<User> queryAll();
+
+    /**
+     * 通过id删除 stu
+     * @param id
+     * @return
+     */
+    boolean delStu(int id);
 }

@@ -206,7 +206,21 @@
             dataType:"json",            // 服务器返回的数据类型
             success:function (data) {   // 成功执行从函数
 
-                alert(data.msg);
+                // alert(data.msg);
+
+                // 判断 如果添加成功 查询所有的数据
+                if (data.code == 400){
+                    //查询所有
+                    // /pms/user 访问 user模块
+                    // ? get请求 url的参数拼接
+                    // method=queryAll 查询所有的业务
+
+                    location.href = "/pms/user?method=queryAll"
+                }
+                if (data.code == 401){
+                    //提示 查询失败
+                    alert(data.msg);
+                }
             }
 
         });

@@ -6,6 +6,8 @@ import com.jutixueyuan.service.UserService;
 import com.jutixueyuan.utils.MybatisUtils;
 import org.apache.ibatis.session.SqlSession;
 
+import java.util.List;
+
 /**
  * @author 黄药师
  * @date 2020-10-31 17:01
@@ -52,5 +54,29 @@ public class UserServiceImpl  implements UserService {
         MybatisUtils.close(sqlSession);
 
         return row > 0;
+    }
+
+    @Override
+    public List<User> queryAll() {
+
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        List<User> list = mapper.queryAll();
+        MybatisUtils.close(sqlSession);
+
+        return list;
+    }
+
+    @Override
+    public boolean delStu(int id) {
+
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int row = mapper.delStu(id);
+
+        sqlSession.commit();
+        MybatisUtils.close(sqlSession);
+
+        return row > 0 ;
     }
 }
