@@ -12,4 +12,8 @@ public interface UserMapper {
 
     User login(@Param("username") String username,@Param("password") String password);
 
+
+    User checkName(String username);
+
+    int addUser(User user);
 }

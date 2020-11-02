@@ -9,4 +9,17 @@
         select * from t_sysuser where username = #{username} and password = #{password}
     </select>
 
+<!--    判断用户名是否存在  -->
+    <select id="checkName" parameterType="string" resultType="User">
+        select * from t_sysuser where username = #{username}
+    </select>
+
+    <insert id="addUser" parameterType="User">
+
+        insert into t_sysuser(id,username,password,realname,
+        phone,email,qq,img,regtime) values (default ,#{username},
+        #{password},#{realname},#{phone},#{email},#{qq},#{img},#{regtime})
+
+    </insert>
+
 </mapper>

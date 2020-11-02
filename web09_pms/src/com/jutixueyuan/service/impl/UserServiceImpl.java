@@ -23,4 +23,34 @@ public class UserServiceImpl  implements UserService {
 
         return user;
     }
+
+    /**
+     *  用户名是否存在
+     * @param username
+     * @return
+     */
+    @Override
+    public boolean checkName(String username) {
+
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User user = mapper.checkName(username);
+        MybatisUtils.close(sqlSession);
+
+//        return user == null; // 为null 返回 true   不为null 返回false
+        return user != null; // 为null 返回 false   不为null 返回true
+    }
+
+    @Override
+    public boolean addUser(User user) {
+
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int row = mapper.addUser(user);
+
+        sqlSession.commit();
+        MybatisUtils.close(sqlSession);
+
+        return row > 0;
+    }
 }

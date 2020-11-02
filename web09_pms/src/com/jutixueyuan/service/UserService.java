@@ -17,4 +17,17 @@ public interface UserService {
      */
     User login(String username, String password);
 
+    /**
+     *  判断用户名是否可以使用
+     * @param username
+     * @return
+     */
+    boolean checkName(String username);
+
+    /**
+     * 添加user
+     * @param user
+     * @return
+     */
+    boolean addUser(User user);
 }
