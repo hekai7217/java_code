@@ -45,4 +45,18 @@ public interface UserService {
      * @return
      */
     boolean delStu(int id);
+
+    /**
+     * 通过id查询
+     * @param parseInt
+     * @return
+     */
+    User findStuById(int parseInt);
+
+    /**
+     * 修改
+     * @param user
+     * @return
+     */
+    boolean updateUser(User user);
 }

@@ -79,4 +79,28 @@ public class UserServiceImpl  implements UserService {
 
         return row > 0 ;
     }
+
+    @Override
+    public User findStuById(int id) {
+
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User user = mapper.findUserById(id);
+        MybatisUtils.close(sqlSession);
+
+        return user;
+    }
+
+    @Override
+    public boolean updateUser(User user) {
+
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        int row = mapper.updateUser(user);
+
+        sqlSession.commit();
+        MybatisUtils.close(sqlSession);
+
+        return row > 0 ;
+    }
 }

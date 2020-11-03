@@ -22,4 +22,8 @@ public interface UserMapper {
     List<User> queryAll();
 
     int delStu(int id);
+
+    User findUserById(int id);
+
+    int updateUser(User user);
 }

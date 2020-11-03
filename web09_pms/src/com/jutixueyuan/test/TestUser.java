@@ -49,4 +49,27 @@ public class TestUser {
 
     }
 
+    @Test
+    public void testUpdateUser(){
+
+        User u = new User();
+        u.setId(10);
+        u.setUsername("周芷若");
+        u.setPassword("111");
+        u.setRealname("周芷若");
+        u.setEmail("222@qq.com");
+        u.setQq("222");
+        u.setPhone("222");
+        u.setImg("/ab/a.jpg");
+        u.setRegtime(new Date());
+
+        UserService userService = new UserServiceImpl();
+
+        boolean update = userService.updateUser(u);
+
+        System.out.println("update = " + update);
+        System.out.println(update?"修改成功":"修改失败");
+
+    }
+
 }

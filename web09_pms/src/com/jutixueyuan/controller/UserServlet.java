@@ -65,9 +65,86 @@ public class UserServlet extends HttpServlet {
                 delStu(req,resp);
             }
 
+            //通过id查询user
+            if(method.equals("findUserById")){
+                findUserById(req,resp);
+            }
 
+            //修改
+            if(method.equals("updateUser")){
+                updateUser(req,resp);
+            }
         }
 
+    }
+
+    /**
+     * 修改
+     * @param req
+     * @param resp
+     */
+    private void updateUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        // 01 获取数据
+
+        // 01 获取页面的数据
+        Map<String, String[]> map = req.getParameterMap();
+
+        // 把map转成bean对象
+        User user = new User();
+        try {
+            BeanUtils.populate(user,map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("user = " + user);
+        // 添加的时候 提交了 6 条数据
+        // 设置 2个数据为默认值
+        user.setImg("/aaa/a.jpg");
+        user.setRegtime(new Date());
+
+        // 02 调用service
+        UserService userService = new UserServiceImpl();
+        boolean flag = userService.updateUser(user);
+
+        // 03 回写数据
+        Result rs = null;
+
+        if (flag){
+            // 修改成功
+            rs = new Result(600,"修改成功...");
+        }else{
+            // 修改失败
+            rs = new Result(601,"需改失败");
+        }
+        resp.getWriter().write(JSON.toJSONString(rs));
+
+
+
+    }
+
+    /**
+     *  通过id 查询 user
+     * @param req
+     * @param resp
+     */
+    private void findUserById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        // 01 获取数据
+        String id = req.getParameter("id");
+        //02 调用service
+        UserService userService = new UserServiceImpl();
+        User user = userService.findStuById(Integer.parseInt(id));
+
+        // 03 回写数据
+        if (user != null){
+
+            req.setAttribute("u",user);
+            // 转发    /资源路径
+            // 重定向  /项目访问路径/资源路径
+            req.getRequestDispatcher("/page/user/editUser.jsp").forward(req,resp);
+
+        }
 
 
     }
