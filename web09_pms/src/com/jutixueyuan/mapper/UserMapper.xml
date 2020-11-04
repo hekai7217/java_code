@@ -51,5 +51,15 @@
 
     </update>
 
+<!--    分页的sql -->
+    <select id="pageUser" resultType="User">
+        select * from t_sysuser limit #{index},#{pageSize}
+    </select>
+
+
+<!--    查询总数 -->
+    <select id="selectCount" resultType="integer">
+        select count(*) from t_sysuser
+    </select>
 
 </mapper>

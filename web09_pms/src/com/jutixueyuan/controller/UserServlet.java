@@ -5,6 +5,7 @@ import com.jutixueyuan.bean.Result;
 import com.jutixueyuan.bean.User;
 import com.jutixueyuan.service.UserService;
 import com.jutixueyuan.service.impl.UserServiceImpl;
+import com.jutixueyuan.utils.PageUtils;
 import org.apache.commons.beanutils.BeanUtils;
 
 import javax.servlet.ServletException;
@@ -25,8 +26,8 @@ import java.util.Map;
  * @author 黄药师
  * @date 2020-11-02 10:47
  * @desc 百战程序员 http://www.jutixueyuan.com
- *
- *  user模块的功能都写在这里
+ * <p>
+ * user模块的功能都写在这里
  */
 @WebServlet(urlPatterns = "/user")
 public class UserServlet extends HttpServlet {
@@ -45,41 +46,86 @@ public class UserServlet extends HttpServlet {
         String method = req.getParameter("method");
         System.out.println("method = " + method);
 
-        if ( method !=null && method.length() > 0) {
+        if (method != null && method.length() > 0) {
 
             // 分发 处理不同的 业务处理
 
             // 校验 用户是否存在
-            if (method.equals("checkName")){
-                checkName(req,resp);
+            if (method.equals("checkName")) {
+                checkName(req, resp);
             }
-            if (method.equals("addUser")){
-                addUser(req,resp);
+            if (method.equals("addUser")) {
+                addUser(req, resp);
             }
             // 查询所有
-            if (method.equals("queryAll")){
-                queryAll(req,resp);
+            if (method.equals("queryAll")) {
+                queryAll(req, resp);
             }
 
-            if (method.equals("delStu")){
-                delStu(req,resp);
+            if (method.equals("delStu")) {
+                delStu(req, resp);
             }
 
             //通过id查询user
-            if(method.equals("findUserById")){
-                findUserById(req,resp);
+            if (method.equals("findUserById")) {
+                findUserById(req, resp);
             }
 
             //修改
-            if(method.equals("updateUser")){
-                updateUser(req,resp);
+            if (method.equals("updateUser")) {
+                updateUser(req, resp);
+            }
+            //分页查询
+            if (method.equals("pageUser")) {
+                pageUser(req, resp);
             }
         }
 
     }
 
     /**
+     * 分页查询
+     *
+     * @param req
+     * @param resp
+     */
+    private void pageUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        // 01 获取数据
+        String pageSizeStr = req.getParameter("pageSize");
+        String currentPageStr = req.getParameter("currentPage");
+
+
+        Integer pageSize = 0;
+        try {
+            pageSize = Integer.parseInt(pageSizeStr);
+        } catch (Exception e) {
+            pageSize = 10;
+        }
+        Integer currentPage = 0;
+        try {
+            currentPage = Integer.parseInt(currentPageStr);
+        } catch (Exception e) {
+            currentPage = 1;
+        }
+        // 02 调用service
+        UserService userService = new UserServiceImpl();
+        PageUtils pageUtils = userService.pageUser(currentPage, pageSize);
+        // 03 回写数据
+
+        if (pageUtils != null){
+
+            // 转发到 分页jsp 页面展示
+            req.setAttribute("pageUtils",pageUtils);
+            req.getRequestDispatcher("/page/user/pageuser.jsp").forward(req,resp);
+        }
+
+
+    }
+
+    /**
      * 修改
+     *
      * @param req
      * @param resp
      */
@@ -93,7 +139,7 @@ public class UserServlet extends HttpServlet {
         // 把map转成bean对象
         User user = new User();
         try {
-            BeanUtils.populate(user,map);
+            BeanUtils.populate(user, map);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,21 +156,21 @@ public class UserServlet extends HttpServlet {
         // 03 回写数据
         Result rs = null;
 
-        if (flag){
+        if (flag) {
             // 修改成功
-            rs = new Result(600,"修改成功...");
-        }else{
+            rs = new Result(600, "修改成功...");
+        } else {
             // 修改失败
-            rs = new Result(601,"需改失败");
+            rs = new Result(601, "需改失败");
         }
         resp.getWriter().write(JSON.toJSONString(rs));
-
 
 
     }
 
     /**
-     *  通过id 查询 user
+     * 通过id 查询 user
+     *
      * @param req
      * @param resp
      */
@@ -137,12 +183,12 @@ public class UserServlet extends HttpServlet {
         User user = userService.findStuById(Integer.parseInt(id));
 
         // 03 回写数据
-        if (user != null){
+        if (user != null) {
 
-            req.setAttribute("u",user);
+            req.setAttribute("u", user);
             // 转发    /资源路径
             // 重定向  /项目访问路径/资源路径
-            req.getRequestDispatcher("/page/user/editUser.jsp").forward(req,resp);
+            req.getRequestDispatcher("/page/user/editUser.jsp").forward(req, resp);
 
         }
 
@@ -150,11 +196,12 @@ public class UserServlet extends HttpServlet {
     }
 
     /**
-     *  删除
+     * 删除
+     *
      * @param req
      * @param resp
      */
-    private void delStu(HttpServletRequest req, HttpServletResponse resp)  throws ServletException, IOException {
+    private void delStu(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         // 01 拿到数据
         String id = req.getParameter("id");
@@ -163,22 +210,23 @@ public class UserServlet extends HttpServlet {
 
         Result rs = null;
 
-        if (flag){
+        if (flag) {
             // 删除功
-            rs = new Result(500,"删除成功...");
-        }else{
+            rs = new Result(500, "删除成功...");
+        } else {
             // 删除失败
-            rs = new Result(501,"删除失败");
+            rs = new Result(501, "删除失败");
         }
         resp.getWriter().write(JSON.toJSONString(rs));
     }
 
     /**
      * 查询所有
+     *
      * @param req
      * @param resp
      */
-    private void queryAll(HttpServletRequest req, HttpServletResponse resp)  throws ServletException, IOException {
+    private void queryAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         // 02 调用方法
         UserService userService = new UserServiceImpl();
@@ -186,10 +234,10 @@ public class UserServlet extends HttpServlet {
 
         // 03 回写数据
         //   查询的是 所有的user 把user发送到 jsp 页面展示
-        if (list.size() > 0){
-            req.setAttribute("users",list);
-            req.getRequestDispatcher("/page/user/users.jsp").forward(req,resp);
-        }else{
+        if (list.size() > 0) {
+            req.setAttribute("users", list);
+            req.getRequestDispatcher("/page/user/users.jsp").forward(req, resp);
+        } else {
             resp.getWriter().write("查询数据为空");
         }
 
@@ -197,6 +245,7 @@ public class UserServlet extends HttpServlet {
 
     /**
      * 添加user
+     *
      * @param req
      * @param resp
      */
@@ -204,11 +253,11 @@ public class UserServlet extends HttpServlet {
 
         // 01 获取页面的数据
         Map<String, String[]> map = req.getParameterMap();
-        
+
         // 把map转成bean对象 
         User user = new User();
         try {
-            BeanUtils.populate(user,map);
+            BeanUtils.populate(user, map);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -224,12 +273,12 @@ public class UserServlet extends HttpServlet {
 
         Result rs = null;
         // 03 回写数据
-        if (flag){
+        if (flag) {
             // 添加成功
-            rs = new Result(400,"用户添加成功...");
-        }else{
+            rs = new Result(400, "用户添加成功...");
+        } else {
             // 添加失败
-            rs = new Result(401,"用户添加失败");
+            rs = new Result(401, "用户添加失败");
         }
         resp.getWriter().write(JSON.toJSONString(rs));
 
@@ -237,6 +286,7 @@ public class UserServlet extends HttpServlet {
 
     /**
      * 校验 用户是否存在
+     *
      * @param req
      * @param resp
      */
@@ -247,14 +297,14 @@ public class UserServlet extends HttpServlet {
         String username = req.getParameter("username");
         // 02 调用service
         UserService userService = new UserServiceImpl();
-        boolean flag =userService.checkName(username);
+        boolean flag = userService.checkName(username);
 
         // 03 回写数据
         Result rs = null;
-        if (flag){  // true  用户名已存在
-            rs = new Result(300,"用户名已存在不能使用");
-        }else{
-            rs = new Result(301,"用户名可以使用");
+        if (flag) {  // true  用户名已存在
+            rs = new Result(300, "用户名已存在不能使用");
+        } else {
+            rs = new Result(301, "用户名可以使用");
         }
 
         resp.getWriter().write(JSON.toJSONString(rs));

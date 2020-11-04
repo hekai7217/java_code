@@ -1,6 +1,7 @@
 package com.jutixueyuan.service;
 
 import com.jutixueyuan.bean.User;
+import com.jutixueyuan.utils.PageUtils;
 
 import java.util.List;
 
@@ -59,4 +60,10 @@ public interface UserService {
      * @return
      */
     boolean updateUser(User user);
+
+    /**
+     *  分页查询
+     * @return
+     */
+    PageUtils pageUser(Integer currentPage, Integer pageSize);
 }

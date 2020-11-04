@@ -26,4 +26,10 @@ public interface UserMapper {
     User findUserById(int id);
 
     int updateUser(User user);
+
+    // 分页的mapper fangfa
+    List<User> pageUser(@Param("index") Integer index,@Param("pageSize") int pageSize);
+
+    // 查询总数
+    Integer selectCount();
 }

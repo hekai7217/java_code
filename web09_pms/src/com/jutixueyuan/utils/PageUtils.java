@@ -81,9 +81,33 @@ public class PageUtils {
         this.nextPage = this.currentPage +1;
 
         // 导航条 开始和结尾
+        // 导航条开始和结束的位置要分情况讨论
+       if(lastPage >= navCount){  // 分页的总数大于 导航条的个数
+//           情况1:  分页的1-6页, 导航条开始和结束位置不会变化
+           if(currentPage <= 6){
+               this.startNav = 1;
+               this.endNav = navCount;
+           }
+           // 情况2  72 - 76 导航条开始和结束位置是不变的
+           else if(currentPage >= lastPage -navCount/2 +1 && currentPage <= lastPage){
+               // 67
+               this.startNav = lastPage -navCount + 1 ;
+               // 76
+               this.endNav = lastPage;
+           }
+           // 情况3  左边 有5个 右边有4个
+           else{
+               this.startNav = currentPage  - navCount/2;
+               // 76
+               this.endNav = currentPage + navCount/2 -1;
+           }
+       }else{  // 分页的总数小于导航条的个数
+           this.startNav = 1;
+           this.endNav = lastPage;
+       }
 
-        //
-
+       // index 的 初始化
+        this.index = (currentPage - 1 )* pageSize;
     }
 
     public PageUtils() {
@@ -183,5 +207,23 @@ public class PageUtils {
 
     public void setIndex(Integer index) {
         this.index = index;
+    }
+
+    @Override
+    public String toString() {
+        return "PageUtils{" +
+                "currentPage=" + currentPage +
+                ", pageSize=" + pageSize +
+                ", totalCount=" + totalCount +
+                ", data=" + data +
+                ", navCount=" + navCount +
+                ", firstPage=" + firstPage +
+                ", lastPage=" + lastPage +
+                ", startNav=" + startNav +
+                ", endNav=" + endNav +
+                ", prePage=" + prePage +
+                ", nextPage=" + nextPage +
+                ", index=" + index +
+                '}';
     }
 }

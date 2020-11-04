@@ -56,7 +56,13 @@
                                 <td>${u.phone}</td>
                                 <td>${u.qq}</td>
                                 <td>
-                                    <a href="#">
+<%--
+                                    /pms/user  用户模块
+                                    ?method=findUserById&id=${u.id} 拼接的字符串
+                                     method user模块下的业务
+                                     id      查询的id
+--%>
+                                    <a href="/pms/user?method=findUserById&id=${u.id}">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                         修改
                                     </a>
