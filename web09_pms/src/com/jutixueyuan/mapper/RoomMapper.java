@@ -24,4 +24,7 @@ public interface RoomMapper {
     //查询房间
     @Select("select * from t_room where floor_id = #{fid}")
     List<Room> findRoom(int fid);
+
+    @Select("select count(*) from t_room where status = #{status}")
+    int findRoomStatus(int status);
 }

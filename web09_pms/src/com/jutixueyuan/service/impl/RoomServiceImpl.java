@@ -62,4 +62,19 @@ public class RoomServiceImpl implements RoomService {
 
         return rs;
     }
+
+    @Override
+    public int findRoomStatus(int status) {
+
+        // 01 拿到 sqlsession
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        // 02 拿到mapper
+        RoomMapper mapper = sqlSession.getMapper(RoomMapper.class);
+        // 03 调用方法
+       int count = mapper.findRoomStatus(status);
+        // 04 关闭资源
+        MybatisUtils.close(sqlSession);
+
+        return count;
+    }
 }

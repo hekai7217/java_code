@@ -7,13 +7,19 @@ import com.jutixueyuan.service.UserService;
 import com.jutixueyuan.service.impl.UserServiceImpl;
 import com.jutixueyuan.utils.PageUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.IntBuffer;
 import java.sql.ResultSet;
@@ -79,7 +85,87 @@ public class UserServlet extends HttpServlet {
             if (method.equals("pageUser")) {
                 pageUser(req, resp);
             }
+            // poi 导出
+            if (method.equals("poi")) {
+                poi(req, resp);
+            }
         }
+
+    }
+
+    /**
+     * poi 导出
+     * @param req
+     * @param resp
+     */
+    private void poi(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        // 设置头信息让浏览器默认保存
+        resp.setHeader("content-disposition","attachment;filename=user.xls");
+
+        //01 拿到数据
+        // 02 调用service 拿到集合数据
+        UserService userService = new UserServiceImpl();
+        PageUtils pageUtils = userService.pageUser(1, 20);
+        // 03创建一个excel 表格
+        Workbook wb = new HSSFWorkbook();
+        // 04 给excel 设置数据
+        Sheet sheet = wb.createSheet("班级同学录");
+        Row row = sheet.createRow(0);
+        row.createCell(0).setCellValue("用户名");
+        row.createCell(1).setCellValue("真实姓名");
+        row.createCell(2).setCellValue("电话");
+        row.createCell(3).setCellValue("QQ号码");
+
+        // 拿到集合中的数据
+        List<User> data = pageUtils.getData();
+        for (int i = 0; i < data.size(); i++) {
+            User user = data.get(i);
+            Row rowi = sheet.createRow(i + 1);
+            rowi.createCell(0).setCellValue(user.getUsername());
+            rowi.createCell(1).setCellValue(user.getRealname());
+            rowi.createCell(2).setCellValue(user.getPhone());
+            rowi.createCell(3).setCellValue(user.getQq());
+        }
+        //  把 Workbook 内存 保存到 xls 中,把 xls 往 浏览器回写
+
+//        // 05 保存 excel表格
+//        ServletContext servletContext = req.getServletContext();
+//        String realPath = servletContext.getRealPath("/user.xls");
+//        try  (OutputStream fileOut = new FileOutputStream(realPath)) {
+//            // 把 工作本 写到 文件流中
+//            wb.write(fileOut);
+//        }
+//
+//        // 06 读取excel 表格 给 浏览器回写数据
+//        InputStream is = servletContext.getResourceAsStream("/user.xls");
+//        ServletOutputStream oos = resp.getOutputStream();
+//        byte [] b = new byte[1024];
+//        int len = 0;
+//        while ((len = is.read(b)) != -1){
+//            oos.write(b,0,len);
+//            oos.flush();
+//        }
+
+        //  把 Workbook 内存 保存byte数组中  把byte数组 给浏览器回写
+
+        // 选择流
+        // 把文件转成 byte数组  内存流 ByteArrayOutputStream
+        // 把byte数组转成文件   内存流 ByteArrayInputStream
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        // 把wb 的内存 写到 内存流中  ByteArrayOutputStream
+        wb.write(bos);
+        byte[] bytes = bos.toByteArray();
+
+        ServletOutputStream outputStream = resp.getOutputStream();
+        outputStream.write(bytes);
+
+//        oos.close();
+//        is.close();
+
+        outputStream.close();
+        bos.close();
 
     }
 

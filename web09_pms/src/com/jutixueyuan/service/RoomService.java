@@ -18,4 +18,7 @@ public interface RoomService {
     List<Floor> findFloor(int bid);
 
     List<Room> findRoom(int fid);
+
+    // 统计 房屋的 以出租/未出租
+    int findRoomStatus(int status);
 }
